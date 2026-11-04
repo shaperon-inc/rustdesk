@@ -2493,6 +2493,20 @@ pub fn rustdesk_interval(i: Interval) -> ThrottledInterval {
 }
 
 pub fn load_custom_client() {
+    // --- 샤페론 맞춤 설정(빌드 시 내장) ---
+    {
+        *config::APP_NAME.write().unwrap() = "ShaperonRemote".to_owned();
+        let mut ow = config::OVERWRITE_SETTINGS.write().unwrap();
+        ow.insert("custom-rendezvous-server".to_owned(), "help.shaperon.com".to_owned());
+        ow.insert("relay-server".to_owned(), "help.shaperon.com".to_owned());
+        ow.insert("key".to_owned(), "EnfF12vFewHgBZyhL+BJkC1ooHsRRyzihgVVmVl6DXY=".to_owned());
+        ow.insert("enable-check-update".to_owned(), "N".to_owned());
+        drop(ow);
+        let mut hard = config::HARD_SETTINGS.write().unwrap();
+        hard.insert("disable-installation".to_owned(), "Y".to_owned());
+        hard.insert("disable-account".to_owned(), "Y".to_owned());
+        hard.insert("disable-ab".to_owned(), "Y".to_owned());
+    }
     #[cfg(debug_assertions)]
     if let Ok(data) = std::fs::read_to_string("./custom.txt") {
         read_custom_client(data.trim());
